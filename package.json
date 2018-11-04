@@ -2,7 +2,7 @@
   "name": "hackernews",
   "description": "hacker news api project",
   "version": "1.0.0",
-  "author": "2083013c <james.carroll940@gmail.com>",
+  "author": "ja-carroll <james.carroll940@gmail.com>",
   "license": "y",
   "private": true,
   "scripts": {

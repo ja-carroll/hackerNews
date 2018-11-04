@@ -1,32 +1,50 @@
 <template>
   <div>
-      <div>{{ msg }}</div>
       <div>
           <ul >
-              <li v-for="story in topStories" :key="story.id">{{ story }}</li>
+              <hackerNewsItem v-for="story in topStories" :key="story.id" :item="story"></hackerNewsItem>
           </ul>
       </div>      
   </div>
 </template>
 
 <script>
-import axios from "axios"
+import HackerNewsApi from "../classes/HackerNewsApi"
+import hackerNewsItem from "./hackNewsItem"
+
 export default {
   name: "hackerNews",
+  components: {
+    hackerNewsItem
+  },
   data() {
     return {
-      msg: "Welcome to Your Vue.js App",
       topStories: null
     };
   },
   mounted() {
-    axios
-      .get("https://hacker-news.firebaseio.com/v0/topstories.json")
-      .then(response => {
-          this.topStories = response.data;
-          console.log(response);
+    const hackerNewsApi = new HackerNewsApi()
+    hackerNewsApi.getTopStories()
+    .then(response => {
+      const pages = splitIntoPages(response);
+      hackerNewsApi.getAllItems(pages[0])
+          .then(response => {
+            this.topStories = response;
+          });
+    });
+
+    function splitIntoPages(itemIds) {
+      var tmpArray = [];
+      var pages = [];
+      console.log(itemIds);
+      var i, j, chunk = 25;
+      for (i=0, j=itemIds.length; i<j; i+=chunk) {
+        tmpArray = itemIds.slice(i, i+chunk);
+        pages.push(tmpArray);
       }
-    )
+      console.log(pages);
+      return pages;
+    }
   }
 };
 </script>
