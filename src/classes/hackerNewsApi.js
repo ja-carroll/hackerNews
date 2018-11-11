@@ -2,8 +2,8 @@ import axios from "axios"
 
 export default class HackerNewsApi {
 
-    getTopStories() {
-        return axios.get("https://hacker-news.firebaseio.com/v0/topstories.json")
+    getStories(type) {
+        return axios.get("https://hacker-news.firebaseio.com/v0/" + type + ".json")
         .then(response => {
             return response.data;
         });
